@@ -42,14 +42,17 @@ public class MainActivity extends AppCompatActivity {
         IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
         registerReceiver(receiver, filter);
 
-        //Kiểm tra quyền scan bluetooth của ứng dụng. Nếu chưa có thì request người dùng
         BluetoothAdapter bluetooth = BluetoothAdapter.getDefaultAdapter();
+        //Kiểm tra quyền scan bluetooth của ứng dụng. Nếu chưa có thì request người dùng
         if (bluetooth.isEnabled()){
-            if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.BLUETOOTH_SCAN) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.checkSelfPermission(this,
+                    android.Manifest.permission.BLUETOOTH_SCAN)
+                    != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.BLUETOOTH_SCAN},
                         MY_PERMISSIONS_REQUEST_BLUETOOTH);
             } else {
+                Toast.makeText(this, "Start Discovery", Toast.LENGTH_SHORT).show();
                 bluetooth.startDiscovery();
             }
         }

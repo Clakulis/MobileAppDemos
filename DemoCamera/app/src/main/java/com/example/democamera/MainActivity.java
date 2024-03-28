@@ -7,13 +7,16 @@ import androidx.core.content.ContextCompat;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     private static final int MY_PERMISSIONS_REQUEST_CAMERA = 100;
+    private static final int TAKE_PICTURE = 1;
 
 
     @Override
@@ -40,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == MY_PERMISSIONS_REQUEST_CAMERA) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // Permission was granted.
+                openCamera();
             } else {
                 // Permission was denied.
                 Toast.makeText(this, "Permission denied by user", Toast.LENGTH_SHORT).show();
@@ -48,6 +52,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void openCamera() {
-        startActivity(new Intent(MediaStore.ACTION_IMAGE_CAPTURE));
+        //Gọi intent chụp ảnh lấy kết quả
+        startActivityForResult(new Intent(MediaStore.ACTION_IMAGE_CAPTURE), TAKE_PICTURE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == TAKE_PICTURE && resultCode == RESULT_OK) {
+            //Xử lý dữ liệu hình ảnh và in ra màn hình
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            ImageView imageView = findViewById(R.id.imageView);
+            imageView.setImageBitmap(imageBitmap);
+        }
     }
 }

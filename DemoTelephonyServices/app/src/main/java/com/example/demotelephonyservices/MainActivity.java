@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        TextView textView = findViewById(R.id.text_view);
 
         //Tạo Intent để thực hiện cuộc gọi
         Intent whoYouGonnaCall = new Intent(Intent.ACTION_DIAL);
@@ -32,7 +33,6 @@ public class MainActivity extends AppCompatActivity {
         TelephonyManager telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
         // Lấy tên máy
         String carrierName = telephonyManager.getNetworkOperatorName();
-        TextView textView = findViewById(R.id.text_view);
         textView.setText(carrierName);
 
         //Kiểm tra xem ứng dụng có quyền đọc trạng thái của điện thoại chưa, nếu chưa thì hỏi người dùng cấp phép
